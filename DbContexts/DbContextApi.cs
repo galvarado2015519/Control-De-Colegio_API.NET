@@ -10,7 +10,11 @@ namespace ApiControlDeColegio.DbContexts
         public DbSet<Carrera> Carreras {get; set;}
         public DbSet<Horario> Horarios {get; set;}
         public DbSet<Salon> Salones {get; set;}
+        public DbSet<Seminario> Seminarios {get; set;}
         public DbSet<Instructor> Instructores {get; set;}
+        public DbSet<Modulo> Modulos {get; set;}
+        public DbSet<DetalleActividad> DetallesActividad {get; set;}
+        public DbSet<DetalleNota> DetalleNotas {get; set;}
         public DbSet<AsignacionAlumno> AsignacionAlumnos {get; set;} 
         public DbContextApi(DbContextOptions<DbContextApi> options) : base(options)
         {
@@ -35,6 +39,12 @@ namespace ApiControlDeColegio.DbContexts
             modelBuilder.Entity<Salon>()
                 .ToTable("Salones")
                 .HasKey(a => new {a.SalonId});
+            modelBuilder.Entity<Seminario>()
+                .ToTable("Seminarios")
+                .HasKey(a => a.SeminairoId);
+            modelBuilder.Entity<Modulo>()
+                .ToTable("Modulos")
+                .HasKey(a => a.ModuloId);
             modelBuilder.Entity<Clase>()
                 .ToTable("Clases")
                 .HasKey(c => c.ClaseId);
@@ -45,6 +55,12 @@ namespace ApiControlDeColegio.DbContexts
                 .HasOne<Alumno>(x => x.Alumno)
                 .WithMany(x => x.Asignaciones)
                 .HasForeignKey(x => x.Carne);
+            modelBuilder.Entity<DetalleActividad>()
+                .ToTable("DetalleActividades")
+                .HasKey(a => a.DetalleActividadId);
+            modelBuilder.Entity<DetalleNota>()
+                .ToTable("DetalleNotas")
+                .HasKey(a => a.DetalleNotaId);
         }
     }
 }
