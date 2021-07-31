@@ -4,7 +4,6 @@ using ApiControlDeColegio.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using ApiControlDeColegio.DbContexts;
 using ApiControlDeColegio.DTOs;
 using Microsoft.Data.SqlClient;
