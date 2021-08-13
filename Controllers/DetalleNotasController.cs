@@ -44,7 +44,7 @@ namespace ApiControlDeColegio.Controllers
             }
         }
 
-        [HttpGet("{detalleNotaId}", Name = "GetAsignacion")]
+        [HttpGet("{detalleNotaId}", Name = "GetDetalleNotas")]
         public async Task<ActionResult<DetalleNotaDTO>> GetDetalleNota(string detalleNotaId)
         {
             logger.LogDebug($"Iniciando el proceso de la consulta de la asignación con el id: {detalleNotaId}");
@@ -85,7 +85,7 @@ namespace ApiControlDeColegio.Controllers
             var detalleNotas = mapper.Map<DetalleNota>(nuevoDetalleNota);
             await this.dbContext.DetalleNotas.AddAsync(detalleNotas);
             await this.dbContext.SaveChangesAsync();
-            return new CreatedAtRouteResult("GetAsignacion", new {detalleNotaId = nuevoDetalleNota.DetalleNotaId}, 
+            return new CreatedAtRouteResult("GetDetalleNotas", new {detalleNotaId = nuevoDetalleNota.DetalleNotaId}, 
                 mapper.Map<DetalleNotaDTO>(detalleNotas));
         }
 

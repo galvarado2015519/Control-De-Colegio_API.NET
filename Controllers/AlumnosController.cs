@@ -61,7 +61,7 @@ namespace ApiControlDeColegio.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AlumnoDTO>> Post([FromBody] AlumnoCreateDTO value)
+        public async Task<ActionResult<AlumnoDTO>> PostAlumno([FromBody] AlumnoCreateDTO value)
         {
             logger.LogDebug("Iniciando el proceso para la creación de un nuevo alumno");
             logger.LogDebug("Iniciando el proceso de la llamada del sp_registrar_alumno ");
@@ -73,7 +73,6 @@ namespace ApiControlDeColegio.Controllers
                                                 .FromSqlRaw("sp_registrar_alumno @Apellidos, @Nombres, @Email", 
                                                     ApellidosParameter, NombresParameter, EmailParameter)
                                                 .ToListAsync();
-            logger.LogDebug($"Resultado de procedimiento almacenado ${Resultado}");
             if(Resultado.Count == 0)
             {
                 return NoContent();
@@ -83,6 +82,47 @@ namespace ApiControlDeColegio.Controllers
                 alumnoDTO = mapper.Map<AlumnoDTO>(registro);
             }
             return new CreatedAtRouteResult("GetAlumno", new { carne = alumnoDTO.Carne}, alumnoDTO);
+        }
+
+        [HttpPut("{alumnoId}")]
+        public async Task<ActionResult> PutAlumno(string alumnoId, [FromBody] Alumno ActualizarAlumno){
+            logger.LogDebug($"Inicio del proceso de modificacion del alumno con el id {alumnoId}");
+            Alumno alumno = await this.dbContext.Alumnos.FirstOrDefaultAsync(a => a.Carne == alumnoId);
+            if(alumno == null)
+            {
+                logger.LogInformation($"No existe el alumno con el id {alumnoId}");
+                return NotFound();
+            }
+            else
+            {
+
+                alumno.NoExpediente = ActualizarAlumno.NoExpediente;
+                alumno.Apellidos = ActualizarAlumno.Apellidos;
+                alumno.Nombres = ActualizarAlumno.Nombres;
+                alumno.Email = ActualizarAlumno.Email;
+                this.dbContext.Entry(alumno).State = EntityState.Modified;
+                await this.dbContext.SaveChangesAsync();
+                logger.LogInformation("Los datos del alumno fueron actualizados exitosamente");
+                return NoContent();
+            }
+        }
+
+        [HttpDelete("{alumnoId}")]
+        public async Task<ActionResult<AlumnoDTO>> DeleteAlumno(String alumnoId) 
+        {
+            logger.LogDebug("Iniciando el procesos de eliminacion del alumno");
+            Alumno alumno = await this.dbContext.Alumnos.FirstOrDefaultAsync(a => a.Carne == alumnoId);
+            if(alumno == null){
+                logger.LogInformation($"No existe la alumno con el Id {alumnoId}");
+                return NotFound();
+            }
+            else
+            {
+                this.dbContext.Alumnos.Remove(alumno);
+                await this.dbContext.SaveChangesAsync();
+                logger.LogInformation($"Se ha realizado la eliminación del registro con el id {alumnoId}");
+                return mapper.Map<AlumnoDTO>(alumno);
+            }
         }
     }
 }
