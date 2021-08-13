@@ -14,7 +14,7 @@ namespace ApiControlDeColegio.Controllers
 {
     [Route("/api/v1/[controller]")]
     [ApiController]
-    public class SeminariosController
+    public class SeminariosController : ControllerBase
     {
         private readonly DbContextApi dbContext;
         private readonly IMapper mapper;
@@ -28,118 +28,106 @@ namespace ApiControlDeColegio.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AsignacionAlumnoDTO>>> GetAsignaciones() {
+        public async Task<ActionResult<IEnumerable<SeminarioDTO>>> GetSeminarios() {
             
-            logger.LogDebug("Iniciando el proceso para obtener el listado de las asignaciones");
-            var asignaciones = await this.dbContext.AsignacionAlumnos.Include(a => a.Alumno).Include(c => c.Clase).ToListAsync();
-            if(asignaciones == null || asignaciones.Count == 0)
+            logger.LogDebug("Iniciando el proceso para obtener el listado de los detalles de actividades");
+            var seminario = await this.dbContext.Seminarios.Include(a => a.Modulo).ToListAsync();
+            if(seminario == null || seminario.Count == 0)
             {
-                logger.LogWarning("No existen registros de asignaciones de alumnos");
+                logger.LogWarning("No existen registros de seminario de alumnos");
                 return NoContent();
             }
             else
             {
-                List<AsignacionAlumnoDetalleDTO> asignacionAlumnoDTOs = mapper.Map<List<AsignacionAlumnoDetalleDTO>>(asignaciones);
-                logger.LogInformation("Consulta exitosa sobre las asignaciones de los alumnos");
-                return Ok(asignacionAlumnoDTOs);
+                List<SeminarioDTO> SeminarioDTOs = mapper.Map<List<SeminarioDTO>>(seminario);
+                logger.LogInformation("Consulta exitosa sobre las seminario de los alumnos");
+                return Ok(SeminarioDTOs);
             }
         }
 
-        [HttpGet("{asignacionId}", Name = "GetAsignacion")]
-        public async Task<ActionResult<AsignacionAlumnoDetalleDTO>> GetAsignacion(string asignacionId)
+        [HttpGet("{seminarioId}", Name = "GetSeminario")]
+        public async Task<ActionResult<SeminarioDTO>> GetSeminario(string seminarioId)
         {
-            logger.LogDebug($"Iniciando el proceso de la consulta de la asignación con el id: {asignacionId}");
-            var asignacion = await this.dbContext.AsignacionAlumnos.Include(c => c.Alumno).Include(c => c.Clase).FirstOrDefaultAsync(c => c.AsignacionId == asignacionId);
-            if(asignacion == null)
+            logger.LogDebug($"Iniciando el proceso de la consulta del seminario con el id: {seminarioId}");
+            var seminario = await this.dbContext.Seminarios.Include(c => c.Modulo).FirstOrDefaultAsync(c => c.SeminarioId == seminarioId);
+            if(seminario == null)
             {
-                logger.LogWarning($"La asignación con el id {asignacionId} no existe");
+                logger.LogWarning($"El seminario con el id {seminarioId} no existe");
                 return NoContent();
             }
             else
             {
-                // List<AsignacionAlumnoDTO> asignacionAlumnoDTOs = mapper.Map<List<AsignacionAlumno>>
-                var asignacionAlumnoDTO = mapper.Map<AsignacionAlumnoDetalleDTO>(asignacion);
+                // List<SeminarioDTO> SeminarioDTOs = mapper.Map<List<Seminario>>
+                var seminarioDTO = mapper.Map<SeminarioDTO>(seminario);
                 logger.LogInformation("Se ejecuto exitosamente la consulta");
-                return Ok(asignacionAlumnoDTO);
+                return Ok(seminarioDTO);
             }
         }
 
         [HttpPost]
-        public async Task<ActionResult<AsignacionAlumnoDetalleDTO>> PostAsignacion([FromBody] AsignacionAlumnoDTO nuevaAsignacion)
+        public async Task<ActionResult<SeminarioDTO>> PostSeminario([FromBody] SeminarioDTO nuevoSeminario)
         {
-            logger.LogDebug("Iniciando el proceso de nueva asignación");
-            logger.LogDebug($"Realizando la consulta del alumno con el carné {nuevaAsignacion.Carne}");
-            Alumno alumno = await this.dbContext.Alumnos.FirstOrDefaultAsync(a => a.Carne == nuevaAsignacion.Carne);
-            if(alumno == null) 
+            logger.LogDebug("Iniciando el proceso de nuevo seminario");
+            logger.LogDebug($"Realizando la consulta del modulo con el seminario {nuevoSeminario.ModuloId}");
+            Modulo modulo = await this.dbContext.Modulos.FirstOrDefaultAsync(a => a.ModuloId == nuevoSeminario.ModuloId);
+            if(modulo == null) 
             {
-                logger.LogInformation($"No existe el alumno con el carné {nuevaAsignacion.Carne}");
+                logger.LogInformation($"No existe el modulo con el id {nuevoSeminario.ModuloId}");
                 return BadRequest();
             }
-            logger.LogDebug($"Realizando la consulta de la clase con el id {nuevaAsignacion.ClaseId}");
-            Clase clase = await this.dbContext.Clases.FirstOrDefaultAsync(c => c.ClaseId == nuevaAsignacion.ClaseId);
-            if(clase == null) 
-            {
-                logger.LogInformation($"No existe la clase con el id {nuevaAsignacion.ClaseId}");
-                return BadRequest();
-            }
-            nuevaAsignacion.AsignacionId = Guid.NewGuid().ToString();
-            var asignacion = mapper.Map<AsignacionAlumno>(nuevaAsignacion);
-            await this.dbContext.AsignacionAlumnos.AddAsync(asignacion);
+           
+            nuevoSeminario.SeminarioId = Guid.NewGuid().ToString();
+            var seminarioMap = mapper.Map<Seminario>(nuevoSeminario);
+            await this.dbContext.Seminarios.AddAsync(seminarioMap);
             await this.dbContext.SaveChangesAsync();
-            return new CreatedAtRouteResult("GetAsignacion", new {asignacionId = nuevaAsignacion.AsignacionId}, 
-                mapper.Map<AsignacionAlumnoDetalleDTO>(asignacion));
+            return new CreatedAtRouteResult("GetSeminario", new {seminarioId = nuevoSeminario.SeminarioId}, 
+                mapper.Map<SeminarioDTO>(seminarioMap));
         }
 
-        [HttpPut("{asignacionId}")]
-        public async Task<ActionResult> PutAsignacion(string asignacionId, [FromBody] AsignacionAlumno ActualizarAsignacion){
-            logger.LogDebug($"Inicio del proceso de modificacion de una asignación con el id {asignacionId}");
-            AsignacionAlumno asignacion = await this.dbContext.AsignacionAlumnos.FirstOrDefaultAsync(a => a.AsignacionId == asignacionId);
-            if(asignacion == null)
+        [HttpPut("{seminarioId}")]
+        public async Task<ActionResult> PutSeminario(string seminarioId, [FromBody] Seminario ActualizarModulo){
+            logger.LogDebug($"Inicio del proceso de modificacion del seminario con el id {seminarioId}");
+            Seminario seminario = await this.dbContext.Seminarios.FirstOrDefaultAsync(a => a.SeminarioId == seminarioId);
+            if(seminario == null)
             {
-                logger.LogInformation($"No existe la asignacion con el id {asignacionId}");
+                logger.LogInformation($"No existe el seminario con el id {seminarioId}");
                 return NotFound();
             }
             else
             {
-                logger.LogDebug($"Realizando la consulta del alumno con el carné {ActualizarAsignacion.Carne}");
-                Alumno alumno = await this.dbContext.Alumnos.FirstOrDefaultAsync(a => a.Carne == ActualizarAsignacion.Carne);
-                if(alumno == null) 
+                logger.LogDebug($"Realizando la consulta del seminario con id {ActualizarModulo.SeminarioId}");
+                Modulo modulo = await this.dbContext.Modulos.FirstOrDefaultAsync(a => a.ModuloId == ActualizarModulo.ModuloId);
+                if(modulo == null) 
                 {
-                    logger.LogInformation($"No existe el alumno con el carné {ActualizarAsignacion.Carne}");
+                    logger.LogInformation($"No existe el modulo con el id {ActualizarModulo.ModuloId}");
                     return BadRequest();
                 }
-                logger.LogDebug($"Realizando la consulta de la clase con el id {ActualizarAsignacion.ClaseId}");
-                Clase clase = await this.dbContext.Clases.FirstOrDefaultAsync(c => c.ClaseId == ActualizarAsignacion.ClaseId);
-                if(clase == null) 
-                {
-                    logger.LogInformation($"No existe la clase con el id {ActualizarAsignacion.ClaseId}");
-                    return BadRequest();
-                }
-                asignacion.Carne = ActualizarAsignacion.Carne;
-                asignacion.ClaseId = ActualizarAsignacion.ClaseId;
-                asignacion.FechaAsignacion = ActualizarAsignacion.FechaAsignacion;
-                this.dbContext.Entry(asignacion).State = EntityState.Modified;
+
+                seminario.ModuloId = ActualizarModulo.ModuloId;
+                seminario.NombreSeminario = ActualizarModulo.NombreSeminario;
+                seminario.FechaInicio = ActualizarModulo.FechaInicio;
+                this.dbContext.Entry(seminario).State = EntityState.Modified;
                 await this.dbContext.SaveChangesAsync();
-                logger.LogInformation("Los datos de la asignación fueron actualizados exitosamente");
+                logger.LogInformation("Los datos del seminario fueron actualizados exitosamente");
                 return NoContent();
             }
         }
 
-        [HttpDelete("{asignacionId}")]
-        public async Task<ActionResult<AsignacionAlumnoDTO>> DeleteAsignacion(String asignacionId) 
+        [HttpDelete("{seminarioId}")]
+        public async Task<ActionResult<SeminarioDTO>> DeleteSeminario(String seminarioId) 
         {
-            logger.LogDebug("Iniciando el procesos de eliminacion de la asignación");
-            AsignacionAlumno asignacion = await this.dbContext.AsignacionAlumnos.FirstOrDefaultAsync(a => a.AsignacionId == asignacionId);
-            if(asignacion == null){
-                logger.LogInformation($"No existe la asignación con el Id {asignacionId}");
+            logger.LogDebug("Iniciando el procesos de eliminacion del seminario");
+            Seminario seminario = await this.dbContext.Seminarios.FirstOrDefaultAsync(a => a.SeminarioId == seminarioId);
+            if(seminario == null){
+                logger.LogInformation($"No existe la seminario con el Id {seminarioId}");
                 return NotFound();
             }
             else
             {
-                this.dbContext.AsignacionAlumnos.Remove(asignacion);
+                this.dbContext.Seminarios.Remove(seminario);
                 await this.dbContext.SaveChangesAsync();
-                logger.LogInformation($"Se ha realizado la eliminación del registro con el id {asignacionId}");
-                return mapper.Map<AsignacionAlumnoDTO>(asignacion);
+                logger.LogInformation($"Se ha realizado la eliminación del registro con el id {seminarioId}");
+                return mapper.Map<SeminarioDTO>(seminario);
             }
         }
     }

@@ -6,7 +6,7 @@ namespace ApiControlDeColegio.Entities
     public class Seminario
     {
         
-        public string SeminairoId {get; set;}
+        public string SeminarioId {get; set;}
         public string ModuloId {get; set;}
         public string NombreSeminario {get; set;}
         public DateTime FechaInicio {get; set;}
@@ -16,9 +16,9 @@ namespace ApiControlDeColegio.Entities
 
         public Seminario(){}
 
-        public Seminario(string seminairoId, string moduloId, string nombreSeminario, DateTime fechaInicio, DateTime fechaFin) 
+        public Seminario(string seminarioId, string moduloId, string nombreSeminario, DateTime fechaInicio, DateTime fechaFin) 
         {
-            this.SeminairoId = seminairoId;
+            this.SeminarioId = seminarioId;
             this.ModuloId = moduloId;
             this.NombreSeminario = nombreSeminario;
             this.FechaInicio = fechaInicio;

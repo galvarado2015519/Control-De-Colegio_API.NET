@@ -41,7 +41,7 @@ namespace ApiControlDeColegio.DbContexts
                 .HasKey(a => new {a.SalonId});
             modelBuilder.Entity<Seminario>()
                 .ToTable("Seminarios")
-                .HasKey(a => a.SeminairoId);
+                .HasKey(a => a.SeminarioId);
             modelBuilder.Entity<Modulo>()
                 .ToTable("Modulos")
                 .HasKey(a => a.ModuloId);

@@ -10,7 +10,7 @@ namespace ApiControlDeColegio.Entities
         public int ValorNota { get; set; }
         
         public virtual List<DetalleActividad> DetalleActividad {get; set;}
-        
+        public virtual List<Alumno> Alumno {get; set;}
         public DetalleNota(){}
         public DetalleNota(string detalleNotaId, string detalleActividadId, string carne, int valorNota)
         {
