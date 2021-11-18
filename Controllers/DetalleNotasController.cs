@@ -88,40 +88,40 @@ namespace ApiControlDeColegio.Controllers
                 mapper.Map<DetalleNotaDTO>(detalleNotas));
         }
 
-        // [HttpPut("{detalleNotaId}")]
-        // public async Task<ActionResult> PutDetalleNota(string detalleNotaId, [FromBody] DetalleNota ActualizarAsignacion){
-        //     logger.LogDebug($"Inicio del proceso de modificacion de una asignación con el id {detalleNotaId}");
-        //     DetalleNota detalleNotas = await this.dbContext.DetalleNotas.FirstOrDefaultAsync(a => a.DetalleNotaId == detalleNotaId);
-        //     if(detalleNotas == null)
-        //     {
-        //         logger.LogInformation($"No existe un detalle de notas en la asignación con el id {detalleNotaId}");
-        //         return NotFound();
-        //     }
-        //     else
-        //     {
-        //         logger.LogDebug($"Realizando la consulta del alumno con el carné {ActualizarAsignacion.Carne}");
-        //         Alumno alumno = await this.dbContext.Alumnos.FirstOrDefaultAsync(a => a.Carne == ActualizarAsignacion.Carne);
-        //         if(alumno == null) 
-        //         {
-        //             logger.LogInformation($"No existe el alumno con el carné {ActualizarAsignacion.Carne}");
-        //             return BadRequest();
-        //         }
-        //         logger.LogDebug($"Realizando la consulta de la clase con el id {ActualizarAsignacion.DetalleActividadId}");
-        //         DetalleActividad detalleActividad = await this.dbContext.DetallesActividad.FirstOrDefaultAsync(c => c.DetalleActividadId == ActualizarAsignacion.DetalleActividadId);
-        //         if(detalleActividad == null) 
-        //         {
-        //             logger.LogInformation($"No existe la clase con el id {ActualizarAsignacion.DetalleActividadId}");
-        //             return BadRequest();
-        //         }
-        //         detalleNotas.Carne = ActualizarAsignacion.Carne;
-        //         detalleNotas.DetalleActividadId = ActualizarAsignacion.DetalleActividadId;
-        //         detalleNotas.ValorNota = ActualizarAsignacion.ValorNota;
-        //         this.dbContext.Entry(detalleNotas).State = EntityState.Modified;
-        //         await this.dbContext.SaveChangesAsync();
-        //         logger.LogInformation("Los datos de la asignación fueron actualizados exitosamente");
-        //         return NoContent();
-        //     }
-        // }
+        [HttpPut("{detalleNotaId}")]
+        public async Task<ActionResult> PutDetalleNota(string detalleNotaId, [FromBody] DetalleNota ActualizarAsignacion){
+            logger.LogDebug($"Inicio del proceso de modificacion de una asignación con el id {detalleNotaId}");
+            DetalleNota detalleNotas = await this.dbContext.DetalleNotas.FirstOrDefaultAsync(a => a.DetalleNotaId == detalleNotaId);
+            if(detalleNotas == null)
+            {
+                logger.LogInformation($"No existe un detalle de notas en la asignación con el id {detalleNotaId}");
+                return NotFound();
+            }
+            else
+            {
+                logger.LogDebug($"Realizando la consulta del alumno con el carné {ActualizarAsignacion.Carne}");
+                Alumno alumno = await this.dbContext.Alumnos.FirstOrDefaultAsync(a => a.Carne == ActualizarAsignacion.Carne);
+                if(alumno == null) 
+                {
+                    logger.LogInformation($"No existe el alumno con el carné {ActualizarAsignacion.Carne}");
+                    return BadRequest();
+                }
+                logger.LogDebug($"Realizando la consulta de la clase con el id {ActualizarAsignacion.DetalleActividadId}");
+                DetalleActividad detalleActividad = await this.dbContext.DetallesActividad.FirstOrDefaultAsync(c => c.DetalleActividadId == ActualizarAsignacion.DetalleActividadId);
+                if(detalleActividad == null) 
+                {
+                    logger.LogInformation($"No existe la clase con el id {ActualizarAsignacion.DetalleActividadId}");
+                    return BadRequest();
+                }
+                detalleNotas.Carne = ActualizarAsignacion.Carne;
+                detalleNotas.DetalleActividadId = ActualizarAsignacion.DetalleActividadId;
+                detalleNotas.ValorNota = ActualizarAsignacion.ValorNota;
+                this.dbContext.Entry(detalleNotas).State = EntityState.Modified;
+                await this.dbContext.SaveChangesAsync();
+                logger.LogInformation("Los datos de la asignación fueron actualizados exitosamente");
+                return NoContent();
+            }
+        }
 
         [HttpDelete("{detalleNotaId}")]
         public async Task<ActionResult<DetalleNotaDTO>> DeleteDetalleNota(String detalleNotaId) 

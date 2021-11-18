@@ -23,7 +23,9 @@ namespace ApiControlDeColegio.Utilities
             CreateMap<Instructor, InstructorDTO>();  
             CreateMap<InstructorDTO, Instructor>();  
             CreateMap<DetalleNota, DetalleNotaDTO>();  
+            CreateMap<DetalleNotaDTO, DetalleNota>();  
             CreateMap<DetalleActividad, DetalleActividadDTO>();  
+            CreateMap<DetalleActividadDTO, DetalleActividad>();  
         }
     }
 }

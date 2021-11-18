@@ -83,38 +83,38 @@ namespace ApiControlDeColegio.Controllers
                 mapper.Map<DetalleActividadDTO>(detalleActividad));
         }
 
-        // [HttpPut("{detalleActividadId}")]
-        // public async Task<ActionResult> PutDetalleActividad(string detalleActividadId, [FromBody] DetalleActividad ActualizarAsignacion){
-        //     logger.LogDebug($"Inicio del proceso de modificacion del detalle de actividad con el id {detalleActividadId}");
-        //     DetalleActividad detalleActividad = await this.dbContext.DetallesActividad.FirstOrDefaultAsync(a => a.DetalleActividadId == detalleActividadId);
-        //     if(detalleActividad == null)
-        //     {
-        //         logger.LogInformation($"No existe el detalle de actividad con el id {detalleActividadId}");
-        //         return NotFound();
-        //     }
-        //     else
-        //     {
-        //         logger.LogDebug($"Realizando la consulta del seminario con id {ActualizarAsignacion.SeminarioId}");
-        //         Seminario seminario = await this.dbContext.Seminarios.FirstOrDefaultAsync(a => a.SeminarioId == ActualizarAsignacion.SeminarioId);
-        //         if(seminario == null) 
-        //         {
-        //             logger.LogInformation($"No existe el seminario con el carné {ActualizarAsignacion.SeminarioId}");
-        //             return BadRequest();
-        //         }
+        [HttpPut("{detalleActividadId}")]
+        public async Task<ActionResult> PutDetalleActividad(string detalleActividadId, [FromBody] DetalleActividad ActualizarAsignacion){
+            logger.LogDebug($"Inicio del proceso de modificacion del detalle de actividad con el id {detalleActividadId}");
+            DetalleActividad detalleActividad = await this.dbContext.DetallesActividad.FirstOrDefaultAsync(a => a.DetalleActividadId == detalleActividadId);
+            if(detalleActividad == null)
+            {
+                logger.LogInformation($"No existe el detalle de actividad con el id {detalleActividadId}");
+                return NotFound();
+            }
+            else
+            {
+                logger.LogDebug($"Realizando la consulta del seminario con id {ActualizarAsignacion.SeminarioId}");
+                Seminario seminario = await this.dbContext.Seminarios.FirstOrDefaultAsync(a => a.SeminarioId == ActualizarAsignacion.SeminarioId);
+                if(seminario == null) 
+                {
+                    logger.LogInformation($"No existe el seminario con el carné {ActualizarAsignacion.SeminarioId}");
+                    return BadRequest();
+                }
 
-        //         detalleActividad.SeminarioId = ActualizarAsignacion.SeminarioId;
-        //         detalleActividad.NombreActividad = ActualizarAsignacion.NombreActividad;
-        //         detalleActividad.Estado = ActualizarAsignacion.Estado;
-        //         detalleActividad.NotaActividad = ActualizarAsignacion.NotaActividad;
-        //         detalleActividad.FechaCreacion = ActualizarAsignacion.FechaCreacion;
-        //         detalleActividad.FechaEntrega = ActualizarAsignacion.FechaEntrega;
-        //         detalleActividad.FechaPostergacion = ActualizarAsignacion.FechaPostergacion;
-        //         this.dbContext.Entry(detalleActividad).State = EntityState.Modified;
-        //         await this.dbContext.SaveChangesAsync();
-        //         logger.LogInformation("Los datos del detalle de actividad fueron actualizados exitosamente");
-        //         return NoContent();
-        //     }
-        // }
+                detalleActividad.SeminarioId = ActualizarAsignacion.SeminarioId;
+                detalleActividad.NombreActividad = ActualizarAsignacion.NombreActividad;
+                detalleActividad.Estado = ActualizarAsignacion.Estado;
+                detalleActividad.NotaActividad = ActualizarAsignacion.NotaActividad;
+                detalleActividad.FechaCreacion = ActualizarAsignacion.FechaCreacion;
+                detalleActividad.FechaEntrega = ActualizarAsignacion.FechaEntrega;
+                detalleActividad.FechaPostergacion = ActualizarAsignacion.FechaPostergacion;
+                this.dbContext.Entry(detalleActividad).State = EntityState.Modified;
+                await this.dbContext.SaveChangesAsync();
+                logger.LogInformation("Los datos del detalle de actividad fueron actualizados exitosamente");
+                return NoContent();
+            }
+        }
 
         [HttpDelete("{detalleActividadId}")]
         public async Task<ActionResult<DetalleActividadDTO>> DeleteDetalleActividad(String detalleActividadId) 
