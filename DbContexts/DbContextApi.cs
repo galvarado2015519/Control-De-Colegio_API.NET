@@ -7,14 +7,14 @@ namespace ApiControlDeColegio.DbContexts
     {
         public DbSet<Clase> Clases {get; set;}
         public DbSet<Alumno> Alumnos {get; set;}
-        // public DbSet<Carrera> Carreras {get; set;}
+        public DbSet<Carrera> Carreras {get; set;}
         // public DbSet<Horario> Horarios {get; set;}
         // public DbSet<Salon> Salones {get; set;}
         public DbSet<Seminario> Seminarios {get; set;}
-        // public DbSet<Instructor> Instructores {get; set;}
+        public DbSet<Instructor> Instructores {get; set;}
         public DbSet<Modulo> Modulos {get; set;}
-        // public DbSet<DetalleActividad> DetallesActividad {get; set;}
-        // public DbSet<DetalleNota> DetalleNotas {get; set;}
+        public DbSet<DetalleActividad> DetallesActividad {get; set;}
+        public DbSet<DetalleNota> DetalleNotas {get; set;}
         public DbSet<AsignacionAlumno> AsignacionAlumnos {get; set;} 
         public DbContextApi(DbContextOptions<DbContextApi> options) : base(options)
         {

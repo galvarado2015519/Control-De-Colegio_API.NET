@@ -26,62 +26,62 @@ namespace ApiControlDeColegio.Controllers
             this.logger = logger;
         }
 
-        // [HttpGet]
-        // public async Task<ActionResult<IEnumerable<DetalleActividadDTO>>> GetDetalleActividades() {
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<DetalleActividadDTO>>> GetDetalleActividades() {
             
-        //     logger.LogDebug("Iniciando el proceso para obtener el listado de los detalles de actividades");
-        //     var detalleActividad = await this.dbContext.DetallesActividad.Include(a => a.Seminario).ToListAsync();
-        //     if(detalleActividad == null || detalleActividad.Count == 0)
-        //     {
-        //         logger.LogWarning("No existen registros de detalleActividad de alumnos");
-        //         return NoContent();
-        //     }
-        //     else
-        //     {
-        //         List<DetalleActividadDTO> detalleActividadDTOs = mapper.Map<List<DetalleActividadDTO>>(detalleActividad);
-        //         logger.LogInformation("Consulta exitosa sobre las detalleActividad de los alumnos");
-        //         return Ok(detalleActividadDTOs);
-        //     }
-        // }
+            logger.LogDebug("Iniciando el proceso para obtener el listado de los detalles de actividades");
+            var detalleActividad = await this.dbContext.DetallesActividad.Include(a => a.Seminario).ToListAsync();
+            if(detalleActividad == null || detalleActividad.Count == 0)
+            {
+                logger.LogWarning("No existen registros de detalleActividad de alumnos");
+                return NoContent();
+            }
+            else
+            {
+                List<DetalleActividadDTO> detalleActividadDTOs = mapper.Map<List<DetalleActividadDTO>>(detalleActividad);
+                logger.LogInformation("Consulta exitosa sobre las detalleActividad de los alumnos");
+                return Ok(detalleActividadDTOs);
+            }
+        }
 
-        // [HttpGet("{detalleActividadId}", Name = "GetDetalleActividad")]
-        // public async Task<ActionResult<DetalleActividadDTO>> GetDetalleActividad(string detalleActividadId)
-        // {
-        //     logger.LogDebug($"Iniciando el proceso de la consulta de la detalle de actividad con el id: {detalleActividadId}");
-        //     var detalleActividad = await this.dbContext.DetallesActividad.Include(c => c.Seminario).FirstOrDefaultAsync(c => c.DetalleActividadId == detalleActividadId);
-        //     if(detalleActividad == null)
-        //     {
-        //         logger.LogWarning($"El detalle de actividad con el id {detalleActividadId} no existe");
-        //         return NoContent();
-        //     }
-        //     else
-        //     {
-        //         // List<DetalleActividadDTO> detalleActividadDTOs = mapper.Map<List<DetalleActividad>>
-        //         var asignacionAlumnoDTO = mapper.Map<DetalleActividadDTO>(detalleActividad);
-        //         logger.LogInformation("Se ejecuto exitosamente la consulta");
-        //         return Ok(asignacionAlumnoDTO);
-        //     }
-        // }
+        [HttpGet("{detalleActividadId}", Name = "GetDetalleActividad")]
+        public async Task<ActionResult<DetalleActividadDTO>> GetDetalleActividad(string detalleActividadId)
+        {
+            logger.LogDebug($"Iniciando el proceso de la consulta de la detalle de actividad con el id: {detalleActividadId}");
+            var detalleActividad = await this.dbContext.DetallesActividad.Include(c => c.Seminario).FirstOrDefaultAsync(c => c.DetalleActividadId == detalleActividadId);
+            if(detalleActividad == null)
+            {
+                logger.LogWarning($"El detalle de actividad con el id {detalleActividadId} no existe");
+                return NoContent();
+            }
+            else
+            {
+                // List<DetalleActividadDTO> detalleActividadDTOs = mapper.Map<List<DetalleActividad>>
+                var asignacionAlumnoDTO = mapper.Map<DetalleActividadDTO>(detalleActividad);
+                logger.LogInformation("Se ejecuto exitosamente la consulta");
+                return Ok(asignacionAlumnoDTO);
+            }
+        }
 
-        // [HttpPost]
-        // public async Task<ActionResult<DetalleActividadDTO>> PostDetalleActividad([FromBody] DetalleActividadDTO nuevoDetalleActividad)
-        // {
-        //     logger.LogDebug("Iniciando el proceso de nuevo detalle de actividad");
-        //     logger.LogDebug($"Realizando la consulta del seminario con el detalle de actividad {nuevoDetalleActividad.SeminarioId}");
-        //     Seminario seminario = await this.dbContext.Seminarios.FirstOrDefaultAsync(a => a.SeminarioId == nuevoDetalleActividad.SeminarioId);
-        //     if(seminario == null) 
-        //     {
-        //         logger.LogInformation($"No existe el seminario con el carné {nuevoDetalleActividad.SeminarioId}");
-        //         return BadRequest();
-        //     }
+        [HttpPost]
+        public async Task<ActionResult<DetalleActividadDTO>> PostDetalleActividad([FromBody] DetalleActividadDTO nuevoDetalleActividad)
+        {
+            logger.LogDebug("Iniciando el proceso de nuevo detalle de actividad");
+            logger.LogDebug($"Realizando la consulta del seminario con el detalle de actividad {nuevoDetalleActividad.SeminarioId}");
+            Seminario seminario = await this.dbContext.Seminarios.FirstOrDefaultAsync(a => a.SeminarioId == nuevoDetalleActividad.SeminarioId);
+            if(seminario == null) 
+            {
+                logger.LogInformation($"No existe el seminario con el carné {nuevoDetalleActividad.SeminarioId}");
+                return BadRequest();
+            }
            
-        //     nuevoDetalleActividad.DetalleActividadId = Guid.NewGuid().ToString();
-        //     var detalleActividad = mapper.Map<DetalleActividad>(nuevoDetalleActividad);
-        //     await this.dbContext.DetallesActividad.AddAsync(detalleActividad);
-        //     await this.dbContext.SaveChangesAsync();
-        //     return new CreatedAtRouteResult("GetDetalleActividad", new {detalleActividadId = nuevoDetalleActividad.DetalleActividadId}, 
-        //         mapper.Map<DetalleActividadDTO>(detalleActividad));
-        // }
+            nuevoDetalleActividad.DetalleActividadId = Guid.NewGuid().ToString();
+            var detalleActividad = mapper.Map<DetalleActividad>(nuevoDetalleActividad);
+            await this.dbContext.DetallesActividad.AddAsync(detalleActividad);
+            await this.dbContext.SaveChangesAsync();
+            return new CreatedAtRouteResult("GetDetalleActividad", new {detalleActividadId = nuevoDetalleActividad.DetalleActividadId}, 
+                mapper.Map<DetalleActividadDTO>(detalleActividad));
+        }
 
         // [HttpPut("{detalleActividadId}")]
         // public async Task<ActionResult> PutDetalleActividad(string detalleActividadId, [FromBody] DetalleActividad ActualizarAsignacion){
@@ -116,22 +116,22 @@ namespace ApiControlDeColegio.Controllers
         //     }
         // }
 
-        // [HttpDelete("{detalleActividadId}")]
-        // public async Task<ActionResult<DetalleActividadDTO>> DeleteDetalleActividad(String detalleActividadId) 
-        // {
-        //     logger.LogDebug("Iniciando el procesos de eliminacion del detalle de actividad");
-        //     DetalleActividad detalleActividad = await this.dbContext.DetallesActividad.FirstOrDefaultAsync(a => a.DetalleActividadId == detalleActividadId);
-        //     if(detalleActividad == null){
-        //         logger.LogInformation($"No existe la detalle de actividad con el Id {detalleActividadId}");
-        //         return NotFound();
-        //     }
-        //     else
-        //     {
-        //         this.dbContext.DetallesActividad.Remove(detalleActividad);
-        //         await this.dbContext.SaveChangesAsync();
-        //         logger.LogInformation($"Se ha realizado la eliminación del registro con el id {detalleActividadId}");
-        //         return mapper.Map<DetalleActividadDTO>(detalleActividad);
-        //     }
-        // }
+        [HttpDelete("{detalleActividadId}")]
+        public async Task<ActionResult<DetalleActividadDTO>> DeleteDetalleActividad(String detalleActividadId) 
+        {
+            logger.LogDebug("Iniciando el procesos de eliminacion del detalle de actividad");
+            DetalleActividad detalleActividad = await this.dbContext.DetallesActividad.FirstOrDefaultAsync(a => a.DetalleActividadId == detalleActividadId);
+            if(detalleActividad == null){
+                logger.LogInformation($"No existe la detalle de actividad con el Id {detalleActividadId}");
+                return NotFound();
+            }
+            else
+            {
+                this.dbContext.DetallesActividad.Remove(detalleActividad);
+                await this.dbContext.SaveChangesAsync();
+                logger.LogInformation($"Se ha realizado la eliminación del registro con el id {detalleActividadId}");
+                return mapper.Map<DetalleActividadDTO>(detalleActividad);
+            }
+        }
     }
 }

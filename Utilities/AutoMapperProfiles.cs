@@ -18,6 +18,12 @@ namespace ApiControlDeColegio.Utilities
             CreateMap<ClaseAsignacionDTO, Clase>();  
             CreateMap<Seminario, SeminarioDTO>();  
             CreateMap<SeminarioDTO, Seminario>();  
+            CreateMap<Modulo, ModuloDTO>();  
+            CreateMap<ModuloDTO, Modulo>();  
+            CreateMap<Instructor, InstructorDTO>();  
+            CreateMap<InstructorDTO, Instructor>();  
+            CreateMap<DetalleNota, DetalleNotaDTO>();  
+            CreateMap<DetalleActividad, DetalleActividadDTO>();  
         }
     }
 }

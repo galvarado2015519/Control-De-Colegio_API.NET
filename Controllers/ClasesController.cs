@@ -153,22 +153,22 @@ namespace ApiControlDeColegio.Controllers
         //     }
         // }
 
-        // [HttpDelete("{claseId}")]
-        // public async Task<ActionResult<Clase>> DeleteClase(String claseId) 
-        // {
-        //     logger.LogDebug("Iniciando el procesos de eliminacion de la clase");
-        //     Clase clase = await this.dbContext.Clases.FirstOrDefaultAsync(a => a.CarreraId == claseId);
-        //     if(clase == null){
-        //         logger.LogInformation($"No existe la clase con el Id {claseId}");
-        //         return NotFound();
-        //     }
-        //     else
-        //     {
-        //         this.dbContext.Clases.Remove(clase);
-        //         await this.dbContext.SaveChangesAsync();
-        //         logger.LogInformation($"Se ha realizado la eliminación del registro con el id {claseId}");
-        //         return mapper.Map<Clase>(clase);
-        //     }
-        // }
+        [HttpDelete("{claseId}")]
+        public async Task<ActionResult<Clase>> DeleteClase(String claseId) 
+        {
+            logger.LogDebug("Iniciando el procesos de eliminacion de la clase");
+            Clase clase = await this.dbContext.Clases.FirstOrDefaultAsync(a => a.CarreraId == claseId);
+            if(clase == null){
+                logger.LogInformation($"No existe la clase con el Id {claseId}");
+                return NotFound();
+            }
+            else
+            {
+                this.dbContext.Clases.Remove(clase);
+                await this.dbContext.SaveChangesAsync();
+                logger.LogInformation($"Se ha realizado la eliminación del registro con el id {claseId}");
+                return mapper.Map<Clase>(clase);
+            }
+        }
     }
 }
