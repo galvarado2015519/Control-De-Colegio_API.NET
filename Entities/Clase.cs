@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace ApiControlDeColegio.Entities
 {
     public class Clase
@@ -16,23 +18,7 @@ namespace ApiControlDeColegio.Entities
         public virtual Salon Salon {get; set;}
         public virtual Horario Horario {get; set;}
         public virtual Instructor Instructor {get; set;}
+        public virtual List<AsignacionAlumno> Asignaciones {get;set;}
         
-        public Clase()
-        {
-            
-        }
-        
-        public Clase(string ClaseId, int Ciclo, int CupoMaximo, int CupoMinimo, string Descripcion, string CarreraId, string HorarioId, string InstructorId, string SalonId)
-        {
-            this.ClaseId = ClaseId;
-            this.Ciclo = Ciclo;
-            this.CupoMaximo = CupoMaximo;
-            this.CupoMinimo = CupoMinimo;
-            this.Descripcion = Descripcion;
-            this.CarreraId = CarreraId;
-            this.HorarioId = HorarioId;
-            this.InstructorId = InstructorId;
-            this.SalonId = SalonId;
-        }
     }
 }

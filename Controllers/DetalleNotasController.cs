@@ -56,7 +56,6 @@ namespace ApiControlDeColegio.Controllers
             }
             else
             {
-                // List<DetalleNotaDTO> detalleNotasDTOs = mapper.Map<List<DetalleNota>>
                 var asignacionAlumnoDTO = mapper.Map<DetalleNotaDTO>(detalleNotas);
                 logger.LogInformation("Se ejecuto exitosamente la consulta");
                 return Ok(asignacionAlumnoDTO);

@@ -44,10 +44,10 @@ namespace ApiControlDeColegio.Controllers
         }
 
         [HttpGet("{claseId}", Name ="GetClase")]
-        public async Task<ActionResult<IEnumerable<Clase>>> GetClase(string claseId)
+        public async Task<ActionResult<Clase>> GetClase(string claseId)
         {
             logger.LogDebug($"Iniciando proceso de consulta sobre la clase con id: {claseId}");
-            var clase = await this.dbContext.Clases.Include(i => i.Instructor).Include(c => c.Carrera).Include(s => s.Salon).Include(s => s.Horario).FirstOrDefaultAsync(c => c.ClaseId == claseId);
+            var clase = await this.dbContext.Clases.Include(i => i.Instructor).Include(c => c.Carrera).Include(s => s.Salon).Include(h => h.Horario).AsNoTracking().FirstOrDefaultAsync(cl => cl.ClaseId == claseId);
             if(clase == null) {
                 logger.LogWarning($"No existe la clase con el id: {claseId}");
                 return new NoContentResult();
@@ -157,7 +157,7 @@ namespace ApiControlDeColegio.Controllers
         public async Task<ActionResult<Clase>> DeleteClase(String claseId) 
         {
             logger.LogDebug("Iniciando el procesos de eliminacion de la clase");
-            Clase clase = await this.dbContext.Clases.FirstOrDefaultAsync(a => a.CarreraId == claseId);
+            Clase clase = await this.dbContext.Clases.FirstOrDefaultAsync(a => a.ClaseId == claseId);
             if(clase == null){
                 logger.LogInformation($"No existe la clase con el Id {claseId}");
                 return NotFound();

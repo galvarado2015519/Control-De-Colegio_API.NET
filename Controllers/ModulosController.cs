@@ -76,7 +76,7 @@ namespace ApiControlDeColegio.Controllers
                 return BadRequest();
             }
            
-            nuevoModulo.CarreraId = Guid.NewGuid().ToString();
+            nuevoModulo.ModuloId = Guid.NewGuid().ToString();
             var modulo = mapper.Map<Modulo>(nuevoModulo);
             await this.dbContext.Modulos.AddAsync(modulo);
             await this.dbContext.SaveChangesAsync();

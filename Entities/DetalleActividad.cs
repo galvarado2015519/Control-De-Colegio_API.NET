@@ -13,20 +13,8 @@ namespace ApiControlDeColegio.Entities
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaEntrega { get; set; }
         public DateTime FechaPostergacion { get; set; }
-        public virtual List<Seminario> Seminario {get; set;}
+        public virtual Seminario Seminario {get; set;}
+        public virtual List<DetalleNota> DetalleNota {get; set;}
 
-        public DetalleActividad(){}
-        public DetalleActividad(string detalleActividadId, string seminarioId, string nombreActividad, char estado, int notaActividad, DateTime fechaCreacion, DateTime fechaEntrega, DateTime fechaPostergacion)
-        {
-            this.DetalleActividadId = detalleActividadId;
-            this.SeminarioId = seminarioId;
-            this.NombreActividad = nombreActividad;
-            this.Estado = estado;
-            this.NotaActividad = notaActividad;
-            this.FechaCreacion = fechaCreacion;
-            this.FechaEntrega = fechaEntrega;
-            this.FechaPostergacion = fechaPostergacion;
-
-        }
     }
 }

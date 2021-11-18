@@ -16,6 +16,16 @@ namespace ApiControlDeColegio.Utilities
             CreateMap<Alumno,AlumnoAsignacionDTO>().ConstructUsing(a => new AlumnoAsignacionDTO{NombreCompleto = $"{a.Apellidos} {a.Nombres}"});
             CreateMap<Clase,ClaseAsignacionDTO>();   
             CreateMap<ClaseAsignacionDTO, Clase>();  
+            CreateMap<Seminario, SeminarioDTO>();  
+            CreateMap<SeminarioDTO, Seminario>();  
+            CreateMap<Modulo, ModuloDTO>();  
+            CreateMap<ModuloDTO, Modulo>();  
+            CreateMap<Instructor, InstructorDTO>();  
+            CreateMap<InstructorDTO, Instructor>();  
+            CreateMap<DetalleNota, DetalleNotaDTO>();  
+            CreateMap<DetalleNotaDTO, DetalleNota>();  
+            CreateMap<DetalleActividad, DetalleActividadDTO>();  
+            CreateMap<DetalleActividadDTO, DetalleActividad>();  
         }
     }
 }

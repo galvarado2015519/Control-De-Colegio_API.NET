@@ -10,18 +10,6 @@ namespace ApiControlDeColegio.Entities
         public string NombreSalon {get; set;}
 
         public virtual List<Clase> Clases {get; set;}
-        public Salon()
-        {
-            
-        }
-
-        public Salon(string SalonId, int Capacidad, string Descripcion, string NombreSalon)
-        {
-            this.SalonId = SalonId;
-            this.Capacidad = Capacidad;
-            this.Descripcion = Descripcion;
-            this.NombreSalon = NombreSalon;            
-        }
 
         public override string ToString()
         {

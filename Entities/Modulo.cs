@@ -10,16 +10,7 @@ namespace ApiControlDeColegio.Entities
         public string NombreModulo {get; set;}
         public int NumeroSeminarios {get; set;}
         
-        public virtual List<Carrera> Carrera {get; set;}
-        
-        public Modulo(){}
-
-        public Modulo(string moduloId, string carreraId, string nombreModulo, int numeroSeminarios) 
-        {
-            this.ModuloId = moduloId;
-            this.CarreraId = carreraId;
-            this.NombreModulo = nombreModulo;
-            this.NumeroSeminarios = numeroSeminarios;       
-        }       
+        public virtual Carrera Carrera {get; set;}
+        public virtual List<Seminario> Seminario {get; set;}
     }
 }

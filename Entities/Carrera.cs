@@ -7,6 +7,7 @@ namespace ApiControlDeColegio.Entities
         public string CarreraId {get; set;}
         public string Nombre {get; set;}
         public virtual List<Clase> Clases {get; set;}
+        public virtual List<Modulo> Modulos {get; set;}
 
         public Carrera()
         {
